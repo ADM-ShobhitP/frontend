@@ -23,7 +23,6 @@ export default function Login() {
 
         service.post("/login/", { username, password })
             .then(response => {
-                console.log("TEST 2");
 
                 if (response.data && response.data.access_token) {
                     setSubmitted(true);
@@ -44,7 +43,6 @@ export default function Login() {
                 }
             })
             .catch(error => {
-                console.error("AXIOS ERROR:");
                 Alert.alert("Login Failed");
                 setError('Failed authentication');
             })
@@ -86,11 +84,6 @@ export default function Login() {
                                 </Button>
                             </View>
                             {submitted}
-                            <Text variant="bodyMedium" style={{ fontSize: 15, paddingLeft: 5, marginTop: 5 }}>
-                                If you are a new user, {" "}
-                                <Text onPress={() => navigation.navigate('SignUp')}
-                                    style={{ fontWeight: 'bold', color: '#1E90FF', textDecorationLine: 'underline' }}> Sign Up </Text>
-                            </Text>
                         </Card.Content>
                     </Card>
                 </View>
