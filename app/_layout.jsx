@@ -6,7 +6,7 @@ import { View, Text } from "react-native";
 import Login from "./login";
 import { MaterialIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Provider } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 
 // Dummy Role-Based Screens
 import AProfile from "./approver/profile";
@@ -16,6 +16,7 @@ import ADetails from "./approver/details";
 import CProfile from "./collector/profile";
 import CSchedule from "./collector/schedule";
 import DCForm from "./collector/dc_form";
+import Store from "../redux/Store";
 const DataCollectorScreen = () => <View><Text>Data Collector Page</Text></View>;
 const ApproverScreen = () => <View><Text> Approver Page</Text></View>;
 const SuperAdminScreen = () => <View><Text> SuperAdmin Page</Text></View>;
@@ -27,40 +28,47 @@ export default function Layout() {
     const { isAuthenticated } = useSelector((state) => state.authReducer);
 
     return (
-        <Provider>
-            <View style={{ flex:1 }}>
-                <NavigationContainer>
-                    <Stack.Navigator screenOptions={{ headerShown: false }}>
-                        {isAuthenticated ? (
-                            <Stack.Screen name="Home" component={AuthTabs} />
-                        ) : (
-                            <Stack.Screen name="Login" component={Login} />
-                        )}
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </View>
-        </Provider>
+            <PaperProvider>
+                <View style={{ flex: 1 }}>
+                    <NavigationContainer>
+                        <Stack.Navigator screenOptions={{ headerShown: false }}>
+                            {isAuthenticated ? (
+                                <Stack.Screen name="Home" component={AuthTabs} />
+                            ) : (
+                                <Stack.Screen name="Login" options={{ headerBackTestID: 'login-front' }} component={Login} />
+                            )}
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                </View>
+            </PaperProvider>
     );
 }
 
 function DCTabNavigator() {
     return (
-        <Tab.Navigator screenOptions={{ 
+        <Tab.Navigator screenOptions={{
             headerStyle: { backgroundColor: 'white', height: 90 },
             headerTintColor: 'black',
-            tabBarStyle: {backgroundColor: 'blue'},
+            tabBarStyle: { backgroundColor: 'blue' },
             tabBarActiveTintColor: "gold",
             tabBarInactiveTintColor: "white",
         }}>
             <Tab.Screen name="Profile" component={CProfile}
                 options={{
-                    tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,}}/>
-            <Tab.Screen name="DataCollector" component={DataCollectorScreen} 
+                    tabBarButtonTestID: 'tab-dcprofile',
+                    tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,
+                }} />
+            <Tab.Screen name="DataCollector" component={DataCollectorScreen}
                 options={{
-                    tabBarIcon: ({ color }) => <MaterialIcons name="assignment" size={28} color={color} />,}}/>
+                    tabBarButtonTestID: 'tab-data-collector',
+                    tabBarIcon: ({ color }) => <MaterialIcons name="assignment" size={28} color={color} />,
+                }} />
             <Tab.Screen name="Schedules" component={CSchedule}
-                options={{ unMountOnBlur: true,
-                    tabBarIcon: ({ color }) => <MaterialIcons name="schedule" size={28} color={color} />}}/>
+                options={{
+                    tabBarButtonTestID: 'tab-dcschedules',
+                    unMountOnBlur: true,
+                    tabBarIcon: ({ color }) => <MaterialIcons name="schedule" size={28} color={color} />
+                }} />
         </Tab.Navigator>
     );
 }
@@ -76,30 +84,36 @@ function CollectorPage() {
 
 function APTabNavigator() {
     return (
-        <Tab.Navigator screenOptions={{ 
+        <Tab.Navigator screenOptions={{
             headerStyle: { backgroundColor: 'white', height: 90 },
             headerTintColor: 'black',
-            tabBarStyle: {backgroundColor: 'blue'},
+            tabBarStyle: { backgroundColor: 'blue' },
             tabBarActiveTintColor: "gold",
             tabBarInactiveTintColor: "white",
         }}>
             <Tab.Screen name="Profile" component={AProfile}
                 options={{
-                    tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,}}/>
+                    tabBarButtonTestID: 'tab-profile',
+                    tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,
+                }} />
             <Tab.Screen name="Approver" component={ApproverScreen}
                 options={{
-                    tabBarIcon: ({ color }) => <MaterialIcons name="check-circle" size={28} color={color} />,}}/>
+                    tabBarButtonTestID: 'tab-approver',
+                    tabBarIcon: ({ color }) => <MaterialIcons name="check-circle" size={28} color={color} />,
+                }} />
             <Tab.Screen name="Schedules" component={ASchedule}
                 options={{
+                    tabBarButtonTestID: 'tab-schedules',
                     unMountOnBlur: true,
-                    tabBarIcon: ({ color }) => <MaterialIcons name="schedule" size={28} color={color} />,}}/>
+                    tabBarIcon: ({ color }) => <MaterialIcons name="schedule" size={28} color={color} />,
+                }} />
         </Tab.Navigator>
     );
 }
 
 function ApproverPage() {
     return (
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Tabs" component={APTabNavigator} />
             <Stack.Screen name="Details" component={ADetails} options={{ headerShown: true, title: "Approver Details" }} />
         </Stack.Navigator>
@@ -108,10 +122,10 @@ function ApproverPage() {
 
 function SuperAdminPage() {
     return (
-        <Tab.Navigator screenOptions={{ 
+        <Tab.Navigator screenOptions={{
             headerStyle: { backgroundColor: 'white', height: 90 },
             headerTintColor: 'black',
-            tabBarStyle: {backgroundColor: 'blue'},
+            tabBarStyle: { backgroundColor: 'blue' },
             tabBarActiveTintColor: "gold",
             tabBarInactiveTintColor: "white",
         }}>

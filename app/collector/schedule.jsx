@@ -21,6 +21,9 @@ export default function CSchedule() {
     const [isVisible, setIsVisible] = useState(false);
     const dispatch = useDispatch();
     const {start_times, token } = useSelector((state) => state.authReducer);
+    const numberOfItemsPerPageList = [20, 50, 75];
+    const [page, setPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(numberOfItemsPerPageList[0]);
     const navigation = useNavigation();
 
 
@@ -86,7 +89,7 @@ export default function CSchedule() {
     
 
     useEffect(() => {
-        async function getCurrentLocation() {
+        (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             console.log("Loc Perm", status);
             if (status !== "granted") {
@@ -99,24 +102,37 @@ export default function CSchedule() {
                 maximumAge: 0,
                 timeout: 10000,
             });
-            console.log("Raw location:", location.coords);
+            console.log("Raw location latitude:", location.coords.latitude + " Raw location longitude:", location.coords.longitude);
+            const { latitude, longitude } = location.coords;
+            setLocation({ latitude, longitude });
             const isInside = isPointInPolygon(location.coords, polygonBoundary);
             setInsideBoundary(isInside);
             console.log("inside:", isInside)
             let address = await Location.reverseGeocodeAsync(location.coords);
             console.log("address:",address)
             setAddress(address[0]);
-        }
-        
-        getCurrentLocation();
+        })
+        ();
     }, [polygonBoundary]);
 
     useEffect(() => {
         fetchSchedules();
     }, []);
 
+    const paginatedSchedules = schedules.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setPage(pageNumber);
+    };
+
+    const handleItemsPerPageChange = (newItemsPerPage) => {
+        setItemsPerPage(newItemsPerPage);
+        setPage(0);
+    }
+
+
     if (loading) {
-        return <ActivityIndicator animating={true} size="large" style={styles.loader} />;
+        return <ActivityIndicator testID="loading" animating={true} size="large" style={styles.loader} />;
     }
 
     
@@ -134,7 +150,7 @@ export default function CSchedule() {
                 </DataTable.Header>
 
                 {schedules.length > 0 ? (
-                    schedules.map(schedule => (
+                    paginatedSchedules.map(schedule => (
                         <DataTable.Row key={schedule.id}>
                             <DataTable.Cell>{schedule.id}</DataTable.Cell>
                             <DataTable.Cell>{schedule.plant.name}</DataTable.Cell>
@@ -163,8 +179,22 @@ export default function CSchedule() {
                 ) : (
                     <Text style={styles.noData}>No Scheduled Visits.</Text>
                 )}
+                { schedules.length > itemsPerPage && (
+                    <DataTable.Pagination
+                    page={page}
+                    numberOfPages={Math.ceil(schedules.length / itemsPerPage)}
+                    onPageChange={handlePageChange}
+                    label={`${page * itemsPerPage + 1}-${Math.min((page + 1) * itemsPerPage, schedules.length)} of ${schedules.length}`}
+                    showFastPaginationControls
+                    numberOfItemsPerPageList={numberOfItemsPerPageList}
+                    numberOfItemsPerPage={itemsPerPage}
+                    onItemsPerPageChange={handleItemsPerPageChange}
+                    selectPageDropdownLabel={'Rows per page'}
+                />
+            )}
             </DataTable>
 
+            
             {/* Map View */}
             {isVisible && (
                 <View style={styles.card}>
@@ -185,13 +215,12 @@ export default function CSchedule() {
                 >
                     {location && (
                         <Marker
-                        coordinate={{
-                            latitude: location.latitude,
-                            longitude: location.longitude,
-                        }}
-                        title="Plant Location To Visit"
-                    />
-                    
+                            coordinate={{
+                                latitude: location.latitude,
+                                longitude: location.longitude,
+                            }}
+                            title="Plant Location To Visit"
+                        />
                     )}
                     {polygonBoundary.length > 0 && (
                         <Polygon coordinates={polygonBoundary} strokeColor="red" fillColor="rgba(255,0,0,0.3)" strokeWidth={2} tappable={true}

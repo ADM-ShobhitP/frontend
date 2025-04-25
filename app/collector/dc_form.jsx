@@ -89,12 +89,6 @@ const DCForm = ({ route }) => {
             <Text>Start Time:</Text>
             <Text style={styles.readOnly}>{startTime}</Text>
 
-            {/* <Text>End Time:</Text>
-            <TouchableOpacity onPress={() => setIsTimeVisible(true)}>
-                <TextInput style={styles.input} placeholder="Select End Time" value={personMet.end_time} editable={false} />
-            </TouchableOpacity>
-            <DateTimePickerModal isVisible={isTimeVisible} mode="time" onConfirm={handleEndTime} onCancel={() => setIsTimeVisible(false)} is24Hour={true} /> */}
-
             <Text>Visit Date:</Text>
             <Text style={styles.readOnly}>{visitDate}</Text>
 
@@ -117,8 +111,8 @@ const DCForm = ({ route }) => {
             <Text style={styles.readOnly}>{location.long}</Text>
 
             <View style={styles.buttonRow}>
-                <Button title="Submit" onPress={handleSubmit} />
-                <Button title="Close" onPress={() => navigation.goBack()} color="red" />
+                <Button testID="subbutton" title="Submit" onPress={handleSubmit} />
+                <Button testID="close" title="Close" onPress={() => navigation.goBack()} color="red" />
             </View>
         </ScrollView>
     );

@@ -35,12 +35,12 @@ export default function AProfile() {
             setOldPWd("");
             setNewPwd("");
             setConfirmPwd("");
-            Alert.alert("Success", "Password changed successfully!");
+            Alert.alert("Success, Password changed successfully!");
             setVisible(false);
         })
         .catch(error => {
             console.error(error); 
-            alert("Password Changed Successfully");
+            alert("Password change failed");
         })
         .finally(() => setLoading(false));
     };
@@ -66,10 +66,10 @@ export default function AProfile() {
 
                         <Divider style={styles.divider} />
                         <View style={styles.buttonContainer}>
-                            <Button mode="contained" style={styles.button} onPress={() => setVisible(true)}>
+                            <Button testID='pwdbutton' mode="contained" style={styles.button} onPress={() => setVisible(true)}>
                                 Change Password
                             </Button>
-                            <Button mode="contained" style={[styles.button, styles.logoutButton]} onPress={handleLogOut}>
+                            <Button testID="logbutton" mode="contained" style={[styles.button, styles.logoutButton]} onPress={handleLogOut}>
                                 LogOut
                             </Button>
                         </View>
@@ -87,17 +87,17 @@ export default function AProfile() {
                                 </View>
 
                                 <Divider style={styles.divider} />
-                                <Text variant="headlineMedium" style={styles.headerText}>Change Password</Text>
+                                <Text testID="modaltitle" variant="headlineMedium" style={styles.headerText}>Change Password</Text>
 
                                 <Divider style={styles.divider} />
 
-                                <TextInput activeOutlineColor="blue" mode="outlined" label="Old Password" secureTextEntry value={oldPwd} onChangeText={setOldPWd} style={styles.input} />
-                                <TextInput activeOutlineColor="blue" mode="outlined" label="New Password" secureTextEntry value={newPwd} onChangeText={setNewPwd} style={styles.input} />
-                                <TextInput activeOutlineColor="blue" mode="outlined" label="Confirm Password" secureTextEntry value={confirmPwd} onChangeText={setConfirmPwd} style={styles.input} />
+                                <TextInput testID="testold" activeOutlineColor="blue" mode="outlined" label="Old Password" secureTextEntry value={oldPwd} onChangeText={setOldPWd} style={styles.input} />
+                                <TextInput testID="testnew" activeOutlineColor="blue" mode="outlined" label="New Password" secureTextEntry value={newPwd} onChangeText={setNewPwd} style={styles.input} />
+                                <TextInput testID="testcnfnew" activeOutlineColor="blue" mode="outlined" label="Confirm Password" secureTextEntry value={confirmPwd} onChangeText={setConfirmPwd} style={styles.input} />
 
                                 <View style={styles.buttonContainer}>
-                                    <Button mode="contained" style={styles.button} onPress={handleChange}>Change Password</Button>
-                                    <Button mode="contained" style={styles.cancelButton} onPress={() => setVisible(false)}>Cancel</Button>
+                                    <Button testID="subbutton" mode="contained" style={styles.button} onPress={handleChange}>Change Password</Button>
+                                    <Button testID="canbutton" mode="contained" style={styles.cancelButton} onPress={() => setVisible(false)}>Cancel</Button>
                                 </View>
                             </Card.Content>
                         </Card>                    

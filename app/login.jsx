@@ -19,8 +19,6 @@ export default function Login() {
         setLoading(true);
         setError(null);
 
-        console.log("TEST");
-
         service.post("/login/", { username, password })
             .then(response => {
 
@@ -39,17 +37,22 @@ export default function Login() {
                 else {
                     setError("Invalid username or password");
                     Alert.alert("Login Failed");
-                    setLoading(false);
                 }
             })
             .catch(error => {
-                Alert.alert("Login Failed");
                 setError('Failed authentication');
             })
-            .finally(() => setLoading(false));
-        setSubmitted(false);
+            .finally(() => {
+                setLoading(false);
+                setSubmitted(false);
+            });
 
     };
+
+    // if (loading) {
+    //     return <ActivityIndicator testID="loading" animating={true} size="large" style={styles.loader} />;
+    // };
+
 
     return (
         <Provider>
@@ -68,12 +71,12 @@ export default function Login() {
                             </View>
 
                             <Text variant='headlineLarge' style={styles.title}>Login Page</Text>
-                            <TextInput
+                            <TextInput testID="username"
                                 label='Username' mode="flat" value={username} onChangeText={setUsername}
                                 left={<TextInput.Icon icon="account" />} style={styles.input}
                             />
 
-                            <TextInput
+                            <TextInput testID="password"
                                 label='Password' secureTextEntry mode="flat" value={password} onChangeText={setPassword}
                                 left={<TextInput.Icon icon="lock" />} style={styles.input}
                             />
@@ -83,6 +86,7 @@ export default function Login() {
                                     {loading ? <ActivityIndicator animating={true} color="white" /> : "Login"}
                                 </Button>
                             </View>
+                            {error && <Text variant="titleMedium" testID='error' style={{ marginTop: 20, marginLeft: 65, color: 'red' }}>{error}</Text>}
                             {submitted}
                         </Card.Content>
                     </Card>

@@ -7,6 +7,7 @@ import service from "../../service_axios";
 export default function ADetails() {
     const route = useRoute();
     const schedule = route.params;
+    console.log('schedule check', schedule)
     const navigation = useNavigation();
     const mapRef = useRef(null);
     
@@ -83,7 +84,7 @@ export default function ADetails() {
         );
     }
 
-    if (!approverData) {
+    if (approverData.length == 0) {
         return (
             <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>No data available for this Approver</Text>
