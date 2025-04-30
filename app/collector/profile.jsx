@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Image, Alert } from "react-native";
 import { Card, Text, Button, TextInput, Divider, Provider, Portal, Modal } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
+import { LogBox } from "react-native";
 import { logout } from "../../redux/AuthSlice";
 import { useNavigation } from "@react-navigation/native";
 import service from "../../service_axios";
@@ -45,11 +46,21 @@ export default function CProfile() {
         .finally(() => setLoading(false));
     };
 
+    LogBox.ignoreLogs([
+        "The action 'NAVIGATE' with payload", 
+    ]);
 
     const handleLogOut = () => {
         dispatch(logout());
         navigation.navigate("Login")
     };
+
+    const handleCancel = () => {
+        setOldPWd("");
+        setNewPwd("");
+        setConfrimPwd("");
+        setVisible(false);
+    }
 
     return (
         <Provider>
@@ -97,7 +108,7 @@ export default function CProfile() {
 
                                 <View style={styles.buttonContainer}>
                                     <Button testID="subbutton" mode="contained" style={styles.button} onPress={handleChange}>Change Password</Button>
-                                    <Button testID="canbutton" mode="contained" style={styles.cancelButton} onPress={() => setVisible(false)}>Cancel</Button>
+                                    <Button testID="canbutton" mode="contained" style={styles.cancelButton} onPress={handleCancel}>Cancel</Button>
                                 </View>
                             </Card.Content>
                         </Card>                    

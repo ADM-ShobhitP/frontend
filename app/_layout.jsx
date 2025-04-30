@@ -12,13 +12,13 @@ import { Provider as PaperProvider } from "react-native-paper";
 import AProfile from "./approver/profile";
 import ASchedule from "./approver/schedule";
 import ADetails from "./approver/details";
+import Approver from "./approver/approver";
 
 import CProfile from "./collector/profile";
 import CSchedule from "./collector/schedule";
 import DCForm from "./collector/dc_form";
-import Store from "../redux/Store";
-const DataCollectorScreen = () => <View><Text>Data Collector Page</Text></View>;
-const ApproverScreen = () => <View><Text> Approver Page</Text></View>;
+import Collector from "./collector/collector";
+// const DataCollectorScreen = () => <View><Text>Data Collector Page</Text></View>;
 const SuperAdminScreen = () => <View><Text> SuperAdmin Page</Text></View>;
 
 const Tab = createBottomTabNavigator();
@@ -58,7 +58,7 @@ function DCTabNavigator() {
                     tabBarButtonTestID: 'tab-dcprofile',
                     tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,
                 }} />
-            <Tab.Screen name="DataCollector" component={DataCollectorScreen}
+            <Tab.Screen name="DataCollector" component={Collector}
                 options={{
                     tabBarButtonTestID: 'tab-data-collector',
                     tabBarIcon: ({ color }) => <MaterialIcons name="assignment" size={28} color={color} />,
@@ -96,7 +96,7 @@ function APTabNavigator() {
                     tabBarButtonTestID: 'tab-profile',
                     tabBarIcon: ({ color }) => <MaterialIcons name="account-box" size={28} color={color} />,
                 }} />
-            <Tab.Screen name="Approver" component={ApproverScreen}
+            <Tab.Screen name="Approver" component={Approver}
                 options={{
                     tabBarButtonTestID: 'tab-approver',
                     tabBarIcon: ({ color }) => <MaterialIcons name="check-circle" size={28} color={color} />,

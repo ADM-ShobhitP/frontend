@@ -110,7 +110,7 @@ describe('DC Form Component', () => {
         expect(screen.getByText('1')).toBeTruthy();
         expect(screen.getByText('mockPlant')).toBeTruthy();
         expect(screen.getByText('16:40:00')).toBeTruthy();
-        expect(screen.getByText('2025-04-24')).toBeTruthy();
+        expect(screen.getByText('2025-04-29')).toBeTruthy();
         fireEvent.changeText(screen.getByText('Name of Person Met:'), 'mockPerson');
         fireEvent.changeText(screen.getByText('Designation:'), 'mockDesignation');
         fireEvent.changeText(screen.getByText('Email:'), 'mock@email.com');

@@ -6,11 +6,19 @@ import '@testing-library/jest-dom'
 import CProfile from '../app/collector/profile';
 import service from '../service_axios';
 import { useNavigation } from '@react-navigation/native';
+import { LogBox } from 'react-native';
 import authReducer, { login } from '../redux/AuthSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import Store from '../redux/Store';
 import Layout from '../app/_layout';
 import { Provider } from 'react-redux';
+
+jest.mock('react-native/Libraries/LogBox/LogBox', () => ({
+    __esModule: true,
+    default: {
+      ignoreLogs: jest.fn(),
+    },
+}));
 
 jest.mock('../app/_layout', () => ({ children }) => <div testID='layout'>{children}</div> );
 

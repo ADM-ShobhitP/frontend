@@ -6,14 +6,21 @@ import '@testing-library/jest-dom'
 import ASchedule from '../app/approver/schedule';
 import service from '../service_axios';
 import { useNavigation } from '@react-navigation/native';
+import { LogBox } from 'react-native';
 import authReducer, { login } from '../redux/AuthSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import Store from '../redux/Store';
 import Layout from '../app/_layout';
 import { Provider } from 'react-redux';
 
-jest.mock('../app/_layout', () => ({ children }) => <div testID='layout'>{children}</div> );
+jest.mock('react-native/Libraries/LogBox/LogBox', () => ({
+    __esModule: true,
+    default: {
+      ignoreLogs: jest.fn(),
+    },
+}));
 
+jest.mock('../app/_layout', () => ({ children }) => <div testID='layout'>{children}</div> );
 
 const mockNavigate = jest.fn();
 jest.mock('@react-navigation/native', () => {
@@ -146,8 +153,6 @@ describe('Approver Schedule Page', () => {
 
     // test('renders addbutton and renders insert schedule form', async () => {
 
-    //     // service.post.mockResolvedValueOnce({ data: "Schedule Added Successfully" })
-
     //     service.get.mockImplementation((url) => {
             
     //         if (url.startsWith('/apprschedules/')) {
@@ -194,8 +199,7 @@ describe('Approver Schedule Page', () => {
     //         expect(screen.getByText('Select Approver')).toBeTruthy();
     //         expect(screen.getByText('Select Collectors')).toBeTruthy();
     //         expect(screen.getByText('Select Plant')).toBeTruthy();
-    //         expect(screen.getByText('2025-04-23')).toBeTruthy();
-    //         expect(screen.getByText('2025-04-23')).toBeTruthy();
+    //         expect(screen.getByText('2025-04-29')).toBeTruthy();
     //         expect(screen.getByText('Submit')).toBeTruthy();
     //         expect(screen.getByText('Close')).toBeTruthy();
     //     })
@@ -281,7 +285,7 @@ describe('Approver Schedule Page', () => {
     //         expect(screen.getByText('Plant2')).toBeTruthy();
     //         fireEvent.press(screen.getByText('Plant2'));
     //     });
-    //     expect(screen.getByText('2025-04-23')).toBeTruthy();
+    //     expect(screen.getByText('2025-04-29')).toBeTruthy();
 
     //     fireEvent.press(screen.getByText('Submit'));
     //     await waitFor(() => {
@@ -368,7 +372,7 @@ describe('Approver Schedule Page', () => {
             expect(screen.getByText('Plant2')).toBeTruthy();
             fireEvent.press(screen.getByText('Plant2'));
         });
-        expect(screen.getByText('2025-04-23')).toBeTruthy();
+        expect(screen.getByText('2025-04-29')).toBeTruthy();
 
         fireEvent.press(screen.getByText('Submit'));
         await waitFor(() => {

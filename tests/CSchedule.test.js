@@ -236,5 +236,4 @@ describe('Data Collector Schedule Page', () => {
         });
     });
 
-
 })

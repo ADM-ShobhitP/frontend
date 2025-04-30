@@ -1,10 +1,19 @@
 global.setImmediate = global.setImmediate || ((fn) => setTimeout(fn, 0));
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
+import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../redux/AuthSlice';
 import Layout from '../app/_layout';
+
+jest.mock('react-native/Libraries/LogBox/LogBox', () => ({
+    __esModule: true,
+    default: {
+      ignoreLogs: jest.fn(),
+    },
+}));
+
 
 jest.mock('react-native-gesture-handler', () => {
     const View = require('react-native/Libraries/Components/View/View');

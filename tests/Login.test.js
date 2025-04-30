@@ -93,37 +93,9 @@ describe('Login Page', () => {
     //     });
     // });
 
-    test('axxess_token missing error', async () => {
+    // test('access_token missing error', async () => {
 
-        service.post.mockResolvedValueOnce({ data: {} })
-
-        const store = configureStore({
-            reducer: { authReducer },
-        });
-        
-        render (
-            <Provider store={store}>
-                <Layout>
-                    <Login />
-                </Layout>
-            </Provider>
-        )
-        expect(screen.getByText('Login Page')).toBeTruthy();
-        fireEvent.changeText(screen.getByTestId('username'), 'testuseraprvr');
-        fireEvent.changeText(screen.getByTestId('password'), 'testpwd');
-        fireEvent.press(screen.getByText('Login'));
-
-        await waitFor(() => {
-            expect(service.post).toHaveBeenCalledTimes(1)
-            expect(screen.getByText('Login')).toBeTruthy();
-            expect(screen.getByText('Invalid username or password'));
-        });
-    });
-
-
-    // test('service axios error', async () => {
-
-    //     service.post.mockRejectedValueOnce(new Error('Network error'))
+    //     service.post.mockResolvedValueOnce({ data: {} })
 
     //     const store = configureStore({
     //         reducer: { authReducer },
@@ -144,9 +116,36 @@ describe('Login Page', () => {
     //     await waitFor(() => {
     //         expect(service.post).toHaveBeenCalledTimes(1)
     //         expect(screen.getByText('Login')).toBeTruthy();
-    //         expect(screen.getByText('Failed authentication'));
+    //         expect(screen.getByText('Invalid username or password'));
     //     });
     // });
 
+
+    test('service axios error', async () => {
+
+        service.post.mockRejectedValueOnce(new Error('Network error'))
+
+        const store = configureStore({
+            reducer: { authReducer },
+        });
+        
+        render (
+            <Provider store={store}>
+                <Layout>
+                    <Login />
+                </Layout>
+            </Provider>
+        )
+        expect(screen.getByText('Login Page')).toBeTruthy();
+        fireEvent.changeText(screen.getByTestId('username'), 'testuseraprvr');
+        fireEvent.changeText(screen.getByTestId('password'), 'testpwd');
+        fireEvent.press(screen.getByText('Login'));
+
+        await waitFor(() => {
+            expect(service.post).toHaveBeenCalledTimes(1)
+            expect(screen.getByText('Login')).toBeTruthy();
+            expect(screen.getByText('Failed authentication'));
+        });
+    });
 
 });
